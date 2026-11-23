@@ -64,6 +64,12 @@ h1 .lev { font-weight: 800; }
 .news .go:focus-visible { outline: 3px solid var(--t); outline-offset: 3px; }
 .news .src { font-size: 13px; color: var(--t); opacity: .9; }
 .news .src a { color: var(--t); }
+.news li.vorbei { --c: #e6e6e6; --t: #4a4a4a; --bt: #4a4a4a; --bc: #ffffff; }
+.news li.vorbei .t { opacity: .85; }
+.news .share { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 13px; }
+.news .share a, .news .share button { color: var(--t); background: none; border: 0; padding: 4px 0; font: inherit; text-decoration: underline; cursor: pointer; }
+.news .share a:focus-visible, .news .share button:focus-visible { outline: 3px solid var(--t); outline-offset: 2px; }
+.news li.trenner { background: transparent; color: var(--white); padding: 6px 4px 0; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 800; }
 .links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
 .links a {
   display: flex; align-items: center; justify-content: space-between; gap: 14px;
@@ -159,9 +165,169 @@ footer a:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
 </div>
 
 <script>
-// Links aus unseren Beiträgen: erscheinen oben, jeder in einer eigenen Farbe (siehe FARBEN).
+// Links aus unseren Beiträgen. Pflege: neue Einträge oben ergänzen (seit = Zeitpunkt unseres Beitrags, ab = erster Termin, bis = letzter Termin, gepostet = Datum unseres Beitrags).
+// Die Seite sortiert selbst: kommende Termine farbig oben, vorbeigegangene grau darunter. Alte Einträge bleiben stehen.
 const AKTUELL = [
+{
+    title: "Wunschpunsch im Forum",
+    when: "Sonntag, 06.12.2026, 15 Uhr",
+    where: "Forum, Großer Saal, Am Büchelter Hof 9",
+    url: "https://www.mvp.de/leverkusen/veranstaltungen/der-satanarchaeoluegenialkohoellische-wunschpunsch-forum-grosser-saal/",
+    bis: "2026-12-06",
+    seit: "2026-11-23T17:30",
+    gepostet: "2026-11-23"
+  },
   {
+    title: "125 Jahre Bayer-Blasorchester",
+    when: "Samstag, 28.11.2026, 19:30 Uhr",
+    where: "Erholungshaus, Nobelstraße 37",
+    url: "https://bayer-blasorchester.de/",
+    bis: "2026-11-28",
+    seit: "2026-11-24T17:30",
+    gepostet: "2026-11-24"
+  },
+  {
+    title: "Schwanensee",
+    when: "Sonntag, 06.12.2026, 18 Uhr",
+    where: "Bayer Erholungshaus, Nobelstraße 37",
+    url: "https://www.mvp.de/leverkusen/veranstaltungen/schwanensee-solenne-ballet-classique-erholungshaus-leverkusen/",
+    bis: "2026-12-06",
+    seit: "2026-11-25T12:00",
+    gepostet: "2026-11-25"
+  },
+  {
+    title: "Wunder geschieht – Weihnachtskonzert",
+    when: "Sonntag, 29.11.2026, Einlass 14:30 Uhr",
+    where: "Christuskirche, Dönhoffstraße 2",
+    url: "https://www.levkiju.de/",
+    bis: "2026-11-29",
+    seit: "2026-11-25T17:30",
+    gepostet: "2026-11-25"
+  },
+  {
+    title: "Dezember im Scala Club",
+    when: "Freitag, 04.12.2026 bis Donnerstag, 17.12.2026",
+    where: "Scala Club, Uhlandstraße 9",
+    url: "https://www.scala-leverkusen.de/veranstaltungen/",
+    ab: "2026-12-04",
+    bis: "2026-12-17",
+    seit: "2026-11-26T17:30",
+    gepostet: "2026-11-26"
+  },
+  {
+    title: "Christmas Jazz mit Greencard",
+    when: "Samstag, 12.12.2026, und Sonntag, 13.12.2026, jeweils 18 Uhr",
+    where: "Industriemuseum Freudenthaler Sensenhammer, Freudenthal 68",
+    url: "https://www.sensenhammer.de/termine/2026-12-12-christmas-jazz",
+    ab: "2026-12-12",
+    bis: "2026-12-13",
+    seit: "2026-11-27T17:30",
+    gepostet: "2026-11-27"
+  },
+  {
+    title: "Celebrate a Kelly Christmas",
+    when: "Samstag, 19.12.2026, 20 Uhr",
+    where: "Forum Leverkusen, Am Büchelter Hof 9",
+    url: "https://www.mvp.de/leverkusen/veranstaltungen/jimmy-kelly-the-streetorchestra-celebrate-a-kelly-leverkusen/",
+    bis: "2026-12-19",
+    seit: "2026-11-28T17:30",
+    gepostet: "2026-11-28"
+  },
+  {
+    title: "Die Höhner: Kölsche Weihnacht",
+    when: "Freitag, 04.12.2026, 19:30 Uhr",
+    where: "Forum, Großer Saal, Am Büchelter Hof 9",
+    url: "https://forumleverkusen.de/veranstaltungen/2026-12-04-hoehner-weihnacht-2026/",
+    bis: "2026-12-04",
+    seit: "2026-11-30T17:30",
+    gepostet: "2026-11-30"
+  },
+  {
+    title: "Adventsbasketball bei den Bayer Giants",
+    when: "Samstag, 05.12.2026, 18 Uhr, und Sonntag, 13.12.2026, 16 Uhr",
+    where: "Ostermann-Arena, Bismarckstraße 125",
+    url: "https://www.giants-leverkusen.de/",
+    ab: "2026-12-05",
+    bis: "2026-12-13",
+    seit: "2026-12-02T12:00",
+    gepostet: "2026-12-02"
+  },
+  {
+    title: "Familienführung im Museum Morsbroich",
+    when: "Sonntag, 06.12.2026, 15 Uhr",
+    where: "Museum Morsbroich, Gustav-Heinemann-Straße 80",
+    url: "https://www.museum-morsbroich.de/veranstaltungen/",
+    bis: "2026-12-06",
+    seit: "2026-12-03T12:00",
+    gepostet: "2026-12-03"
+  },
+  {
+    title: "3D-Krimidinner „La Petite Détective“",
+    when: "Mittwoch, 09.12.2026, bis Sonntag, 13.12.2026 (weitere Termine 2027)",
+    where: "Kristallhotel Fettehenne, Monheimer Straße 2b",
+    url: "https://www.immersive-dining.com/",
+    ab: "2026-12-09",
+    bis: "2027-02-28",
+    seit: "2026-12-03T17:30",
+    gepostet: "2026-12-03"
+  },
+  {
+    title: "ChristkindchenMarkt Wiesdorf",
+    when: "Donnerstag, 19.11.2026, bis Mittwoch, 30.12.2026, täglich 11–20 Uhr",
+    where: "Fußgängerzone Wiesdorf",
+    url: "https://www.christkindchenmarkt.de/",
+    ab: "2026-11-19",
+    bis: "2026-12-30",
+    seit: "2026-11-19T09:00",
+    gepostet: "2026-11-19"
+  },
+  {
+    title: "Klaus Hoffmann: „Ich bin“",
+    when: "Sonntag, 22.11.2026, 20 Uhr",
+    where: "Scala Club, Uhlandstraße 9",
+    url: "https://www.scala-leverkusen.de/",
+    bis: "2026-11-22",
+    seit: "2026-11-19T12:00",
+    gepostet: "2026-11-19"
+  },
+  {
+    title: "Annett Louisan bei den Jazztagen",
+    when: "Samstag, 21.11.2026, 20 Uhr",
+    where: "Erholungshaus, Nobelstraße 37",
+    url: "https://www.leverkusener-jazztage.de/",
+    bis: "2026-11-21",
+    seit: "2026-11-20T17:30",
+    gepostet: "2026-11-20"
+  },
+  {
+    title: "Jim Button’s live",
+    when: "Samstag, 21.11.2026, 20 Uhr",
+    where: "Saal Norhausen, Felderstraße 17",
+    url: "https://jimbuttons.com/",
+    bis: "2026-11-21",
+    seit: "2026-11-19T17:30",
+    gepostet: "2026-11-19"
+  },
+  {
+    title: "Guildo Horn: Zusatzkonzert",
+    when: "Freitag, 20.11.2026, 20 Uhr",
+    where: "Scala Club, Uhlandstraße 9",
+    url: "https://www.scala-leverkusen.de/",
+    bis: "2026-11-20",
+    seit: "2026-11-17T17:30",
+    gepostet: "2026-11-17"
+  },
+  {
+    title: "Martinszug in Rheindorf",
+    when: "Donnerstag, 19.11.2026, 16:30 Uhr",
+    where: "Start: Felderstraße 160, Friedenspark Rheindorf",
+    url: "https://www.instagram.com/ggs_opladen/",
+    bis: "2026-11-19",
+    seit: "2026-11-18T17:30",
+    gepostet: "2026-11-18"
+  },
+{
+    bio: true,
     title: "Rocky Horror Show",
     when: "Samstag, 31.10.2026, 22 Uhr",
     where: "Scala Cinema, Uhlandstraße 9",
@@ -172,6 +338,7 @@ const AKTUELL = [
     gepostet: "2026-10-30"
   },
   {
+    bio: true,
     title: "FederFlieger",
     when: "Freitag, 06.11.2026, 16–18 Uhr",
     where: "NaturGut Ophoven, Talstraße 62",
@@ -182,6 +349,7 @@ const AKTUELL = [
     gepostet: "2026-10-30"
   },
   {
+    bio: true,
     title: "Magic Gregorian Night",
     when: "Montag, 02.11.2026, 20 Uhr",
     where: "CityKirche Leverkusen, Breidenbachstraße 9",
@@ -192,6 +360,7 @@ const AKTUELL = [
     gepostet: "2026-10-30"
   },
   {
+    bio: true,
     title: "Blätterdruck",
     when: "Sonntag, 01.11.2026, 14–16 Uhr",
     where: "NaturGut Ophoven, Talstraße 62",
@@ -202,6 +371,7 @@ const AKTUELL = [
     gepostet: "2026-10-30"
   },
   {
+    bio: true,
     title: "Erklär mir, Liebe – 100 Jahre Ingeborg Bachmann",
     when: "Freitag, 30.10.2026, 20–21:30 Uhr",
     where: "Junges Theater Leverkusen, Karlstraße 9a",
@@ -212,6 +382,7 @@ const AKTUELL = [
     gepostet: "2026-10-28"
   },
   {
+    bio: true,
     title: "Überall Gespensterchen (3–6 Jahre)",
     when: "Montag, 02.11.2026, 15:30–17 Uhr",
     where: "NaturGut Ophoven, Talstraße 62",
@@ -222,6 +393,7 @@ const AKTUELL = [
     gepostet: "2026-10-28"
   },
   {
+    bio: true,
     title: "Kinder-Halloween-Party",
     when: "Samstag, 31.10.2026, 10–14 Uhr",
     where: "Marimars Tanztempel, Kalkstraße 31a",
@@ -232,6 +404,7 @@ const AKTUELL = [
     gepostet: "2026-10-28"
   },
   {
+    bio: true,
     title: "Queen May Rock an Halloween",
     when: "Samstag, 31.10.2026, 20 Uhr",
     where: "Saal Norhausen, Felderstraße 17",
@@ -242,6 +415,7 @@ const AKTUELL = [
     gepostet: "2026-10-27"
   },
   {
+    bio: true,
     title: "Mords-Morde – Krimi-Lesung",
     when: "Dienstag, 27.10.2026, 18:30 Uhr",
     where: "Stadtbibliothek Leverkusen, Friedrich-Ebert-Platz 3d",
@@ -252,6 +426,7 @@ const AKTUELL = [
     gepostet: "2026-10-27"
   },
   {
+    bio: true,
     title: "Tagsüber Zirkus, abends Theater",
     when: "Freitag, 06.11.2026, 18–20:30 Uhr und Samstag, 07.11.2026, 10–15 Uhr",
     where: "Katholisches Bildungsforum, Manforter Straße 186",
@@ -262,6 +437,7 @@ const AKTUELL = [
     gepostet: "2026-10-26"
   },
   {
+    bio: true,
     title: "Truck Stop live",
     when: "Samstag, 31.10.2026, 19 Uhr",
     where: "Erholungshaus, Nobelstraße 37",
@@ -272,6 +448,7 @@ const AKTUELL = [
     gepostet: "2026-10-25"
   },
   {
+    bio: true,
     title: "Leverkusener Jazztage",
     when: "1.–25. November 2026",
     where: "Forum, Erholungshaus, Scala, Sensenhammer",
@@ -282,6 +459,7 @@ const AKTUELL = [
     gepostet: "2026-10-25"
   },
   {
+    bio: true,
     title: "Wie wuchs Leverkusen?",
     when: "Sonntag, 25.10.2026, 11 Uhr",
     where: "Villa Römer, Haus-Vorster-Straße 6",
@@ -292,6 +470,7 @@ const AKTUELL = [
     gepostet: "2026-10-23"
   },
   {
+    bio: true,
     title: "Familientag im NaturGut",
     when: "Samstag, 31.10.2026, 13:30–18 Uhr",
     where: "NaturGut Ophoven, Stauffenbergstraße 17",
@@ -302,6 +481,7 @@ const AKTUELL = [
     gepostet: "2026-10-23"
   },
   {
+    bio: true,
     title: "Herbstferien im Sensenhammer",
     when: "bis Sonntag, 01.11.2026; Schmiedevorführung Samstag, 24.10.2026, 15 Uhr",
     where: "Sensenhammer, Freudenthal 68",
@@ -312,6 +492,7 @@ const AKTUELL = [
     gepostet: "2026-10-23"
   },
   {
+    bio: true,
     title: "Kunst gegen Bares",
     when: "Dienstag, 20.10.2026, 20 Uhr",
     where: "KulturAusbesserungsWerk, Kolberger Straße 95a",
@@ -322,6 +503,7 @@ const AKTUELL = [
     gepostet: "2026-10-20"
   },
   {
+    bio: true,
     title: "Ferien-Workshops Morsbroich",
     when: "Mittwoch, 21.10.2026, bis Freitag, 23.10.2026",
     where: "Museum Morsbroich, Gustav-Heinemann-Straße 80",
@@ -332,6 +514,7 @@ const AKTUELL = [
     gepostet: "2026-10-20"
   },
   {
+    bio: true,
     title: "Theaterpremiere „Revolt“",
     when: "Freitag, 23.10.2026, 20 Uhr (weitere: Sa 24.10., 20 Uhr; So 25.10., 18 Uhr)",
     where: "Junges Theater Leverkusen, Karlstraße 9a",
@@ -342,6 +525,7 @@ const AKTUELL = [
     gepostet: "2026-10-20"
   },
   {
+    bio: true,
     title: "Verkaufsoffener Sonntag",
     when: "Sonntag, 18.10.2026, 13–18 Uhr",
     where: "City Wiesdorf / Rathaus-Galerie, Friedrich-Ebert-Platz 2",
@@ -352,6 +536,7 @@ const AKTUELL = [
     gepostet: "2026-10-17"
   },
   {
+    bio: true,
     title: "Familienfest im Museum",
     when: "Sonntag, 18.10.2026, 11–17 Uhr",
     where: "Museum Morsbroich, Gustav-Heinemann-Straße 80",
@@ -362,6 +547,7 @@ const AKTUELL = [
     gepostet: "2026-10-16"
   },
   {
+    bio: true,
     title: "Kunterbunter Herbst",
     when: "Freitag, 16.10.2026, 15:30–17 Uhr",
     where: "NaturGut Ophoven, Talstraße 62",
@@ -388,12 +574,43 @@ const FARBEN = [
 ];
 
 const news = document.getElementById("news");
-news.hidden = AKTUELL.length === 0;
-document.getElementById("news-label").hidden = AKTUELL.length === 0;
-AKTUELL.forEach((n, i) => {
+// "Heute" in Berliner Zeit. Zum Testen: Seite mit #stand=2026-11-30 aufrufen.
+const jetzt = (() => {
+  const m = location.hash.match(/stand=(\d{4}-\d{2}-\d{2})(?:T(\d{2}:\d{2}))?/);
+  if (m) return m[1] + "T" + (m[2] || "12:00");
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`;
+})();
+const heute = jetzt.slice(0, 10);
+// Erst sichtbar, wenn unser Beitrag online ist (seit). Reihenfolge: 1. Beiträge mit "Link in Bio", 2. alle weiteren Beiträge, 3. vorbeigegangene (grau).
+const sichtbar = AKTUELL.filter(n => !n.seit || n.seit <= jetzt);
+const nachTermin = (a, b) => (a.ab || a.bis || "9999").localeCompare(b.ab || b.bis || "9999");
+const kommend = sichtbar.filter(n => !n.bis || n.bis >= heute).sort(nachTermin);
+const kommendBio = kommend.filter(n => n.bio);
+const kommendWeitere = kommend.filter(n => !n.bio);
+const vorbei = sichtbar.filter(n => n.bis && n.bis < heute).sort((a, b) => b.bis.localeCompare(a.bis));
+news.hidden = sichtbar.length === 0;
+document.getElementById("news-label").hidden = sichtbar.length === 0;
+// Teilen ohne Tracking: reine Links zu WhatsApp und Facebook, dazu "Link kopieren".
+function teilen(n) {
+  const wrap = document.createElement("div"); wrap.className = "share";
+  const lab = document.createElement("span"); lab.textContent = "Teilen:"; wrap.appendChild(lab);
+  const text = `${n.title}, ${n.when}${n.where ? ", " + n.where : ""}`;
+  const mk = (name, href) => { const a = document.createElement("a"); a.href = href; a.target = "_blank"; a.rel = "noopener noreferrer"; a.textContent = name; a.setAttribute("aria-label", name + ": " + n.title); wrap.appendChild(a); };
+  mk("WhatsApp", "https://wa.me/?text=" + encodeURIComponent(text + "\n" + n.url));
+  mk("Facebook", "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(n.url));
+  const b = document.createElement("button"); b.type = "button"; b.textContent = "Link kopieren"; b.setAttribute("aria-label", "Link kopieren: " + n.title);
+  b.addEventListener("click", () => {
+    const fertig = () => { b.textContent = "Kopiert"; setTimeout(() => { b.textContent = "Link kopieren"; }, 2000); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(n.url).then(fertig, () => {});
+  });
+  wrap.appendChild(b);
+  return wrap;
+}
+function karte(n, i, istVorbei) {
   const li = document.createElement("li");
-  const f = FARBEN[i % FARBEN.length];
-  li.style.cssText = `--c:${f.c};--t:${f.t};--bt:${f.bt};--bc:${f.bc}`;
+  if (istVorbei) li.className = "vorbei";
+  else { const f = FARBEN[i % FARBEN.length]; li.style.cssText = `--c:${f.c};--t:${f.t};--bt:${f.bt};--bc:${f.bc}`; }
   const h = document.createElement("p"); h.className = "t"; h.textContent = n.title;
   const w = document.createElement("p"); w.className = "when"; w.textContent = n.when;
   li.append(h, w);
@@ -403,8 +620,18 @@ AKTUELL.forEach((n, i) => {
   const a = document.createElement("a"); a.className = "go"; a.href = n.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Mehr erfahren →";
   const src = document.createElement("span"); src.className = "src"; src.append("Link führt zu: ");
   const sa = document.createElement("a"); sa.href = n.url; sa.target = "_blank"; sa.rel = "noopener"; sa.textContent = new URL(n.url).hostname.replace(/^www\./, "");
-  src.appendChild(sa); row.append(a, src); li.appendChild(row); news.appendChild(li);
-});
+  src.appendChild(sa); row.append(a, src); li.appendChild(row);
+  if (!istVorbei) li.appendChild(teilen(n));
+  news.appendChild(li);
+}
+function gruppe(titel, liste, istVorbei, off = 0) {
+  if (!liste.length) return;
+  if (titel) { const t = document.createElement("li"); t.className = "trenner"; t.textContent = titel; news.appendChild(t); }
+  liste.forEach((n, i) => karte(n, i + off, istVorbei));
+}
+gruppe(kommendBio.length && kommendWeitere.length ? "Link in Bio" : "", kommendBio, false);
+gruppe(kommendBio.length ? "Weitere Beiträge von uns" : "", kommendWeitere, false, kommendBio.length);
+gruppe("Schon vorbei", vorbei, true);
 
 // Link-Liste: hier werden Links ergänzt, entfernt oder umsortiert.
 const LINKS = [
